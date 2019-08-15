@@ -1,0 +1,16 @@
+FROM continuumio/anaconda3:latest
+
+
+# Identify the maintainer of an image
+LABEL maintainer="abhinavhinger12@gmail.com"
+LABEL version="0.1"
+LABEL description="FASTAI"
+#
+# Update the image to the latest packages
+#RUN apt-get update && apt-get upgrade -y
+RUN apt-get update
+
+#
+RUN /bin/bash -c "conda install -c pytorch -c fastai fastai"
+
+RUN apt-get install -y git
