@@ -1,18 +1,54 @@
-# We will use Ubuntu for our image
-FROM ubuntu
-# Updating Ubuntu packages
-RUN apt-get update && yes|apt-get upgrade
-# Adding wget and bzip2
-RUN apt-get install -y wget bzip2
-# Anaconda installing
-RUN wget https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
-RUN bash Anaconda3-5.0.1-Linux-x86_64.sh -b
-RUN rm Anaconda3-5.0.1-Linux-x86_64.sh
-# Set path to conda
-ENV PATH /root/anaconda3/bin:$PATH
-# Updating Anaconda packages
-RUN conda update conda
-RUN conda install anaconda
-RUN conda update anaconda
-RUN conda update --all
-RUN conda install -c pytorch -c fastai fastai
+# Each instruction in this file generates a new layer that gets pushed to your local image cache
+ 
+# Lines preceeded by # are regarded as comments and ignored
+ 
+#
+# The line below states we will base our new image on the Latest Official Ubuntu 
+# Remove py3 for python 2 image
+FROM tensorflow/tensorflow:latest-gpu-py3
+#ENV http_proxy http://172.16.117.121:3128
+#ENV https_proxy http://172.16.117.121:3128
+
+# Identify the maintainer of an image
+LABEL maintainer="abhinavh@iitg.ac.in"
+LABEL version="0.1"
+LABEL description="Tensorflow, Pytorch "
+#
+# Update the image to the latest packages
+#RUN apt-get update && apt-get upgrade -y
+RUN apt-get update
+
+#
+RUN apt-get install -y wget vim htop fish datamash graphviz libgraphviz-dev
+
+RUN pip3 --no-cache-dir install ipython pandas
+
+RUN pip3 --no-cache-dir install docopt joblib natsort scipy
+
+RUN pip3 --no-cache-dir install tqdm keras matplotlib librosa scikit-learn
+
+RUN pip3 --no-cache-dir install dill bleach namedtupled
+
+RUN pip3 --no-cache-dir install PyEMD
+
+RUN pip3 --no-cache-dir install torch nltk
+
+RUN pip3 --no-cache-dir install networkx pathlib pygraphviz
+
+RUN pip3 --no-cache-dir install seaborn 
+
+RUN pip3 --no-cache-dir install torchvision
+
+RUN pip3 --no-cache-dir install opencv-python Pillow
+
+RUN apt-get install -y git
+
+# 
+RUN apt-get install -y python3-venv
+
+# Install locales
+RUN apt-get install -y locales locales-all
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ 
